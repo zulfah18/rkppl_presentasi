@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>PrimeFaces</title>
+            </f:facet>
+        </h:head>
+
+        <h:body>
+            <h:form>
+                <h:panelGrid columns="2" cellpadding="5">
+                    <p:outputLabel for="supplierName" value="Choose supplier : " />
+                    <p:selectOneMenu id="supplierName" value="#{supplierView.supplierName}">
+                        <f:selectItem itemLabel="Select One" itemValue="" />
+                        <f:selectItems value="#{supplierView.supplierNames}" />
+                    </p:selectOneMenu>
+                    <p:commandButton value="Search" icon="ui-icon-search"  />
+                </h:panelGrid>
+            </h:form>
+
+            <h:form id="form">
+                <p:dataGrid var="p" value="#{productView.products}" columns="3" rows="12" paginator="true"  
+                            paginatorTemplate="{CurrentPageReport} {PreviousPageLink} {PageLinks} {NextPageLink}">
+                    <f:facet name="header">
+                        Product for Sale
+                    </f:facet>
+                    <p:panel header="#{p.productName}" style="text-align:center">
+                        <h:panelGrid columns="1" style="width:100%">
+                            <h:graphicImage value="resources/images/1.jpg" width="100" height="100" />
+                            <p:commandLink update=":form:productDetail" oncomplete="PF('productDialog').show()" title="View Detail">
+                                <h:outputText styleClass="ui-icon ui-icon-search" style="margin:0 auto;" />
+                                <f:setPropertyActionListener value="#{p}" target="#{productView.product}" />
+                            </p:commandLink>
+                            <p:commandButton value="Buy" />
+                        </h:panelGrid>
+                    </p:panel>
+                </p:dataGrid>
+
+                <p:dialog header="Product Info" widgetVar="productDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                    <p:outputPanel id="productDetail" style="text-align:center;">
+                        <p:panelGrid  columns="2" columnClasses="label,value">
+                            <f:facet name="header">
+                                <h:graphicImage value="resources/images/1.jpg" width="400" height="400" /> 
+                            </f:facet>
+
+                            <h:outputText value="Id:" />
+                            <h:outputText value="#{productView.product.productId}" />
+
+                            <h:outputText value="Name:" />
+                            <h:outputText value="#{productView.product.productName}" />
+
+                            <h:outputText value="Price:" />
+                            <h:outputText value="#{productView.product.productPrice}" />
+
+                        </p:panelGrid>
+                    </p:outputPanel>
+                </p:dialog>
+            </h:form>
+
+        </h:body>
+    </f:view>
+</html>
